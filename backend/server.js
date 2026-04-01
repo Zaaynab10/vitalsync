@@ -5,6 +5,10 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date() });
 });
 
+app.get("/api/stats", (req, res) => {
+  res.json({ steps: 0, calories: 0 });
+});
+
 app.get("/api/activities", (req, res) => {
   res.json([]);
 });
