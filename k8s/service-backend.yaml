@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vitalsync-backend-service
+spec:
+  # ClusterIP : expose le back-end uniquement en interne au cluster.
+  # Le front-end et les autres services peuvent l'appeler par son nom DNS,
+  # mais il n'est pas accessible depuis l'exterieur, ce qui reduit la surface d'attaque.
+  type: ClusterIP
+  selector:
+    app: vitalsync-backend
+  ports:
+    - port: 3000
+      targetPort: 3000

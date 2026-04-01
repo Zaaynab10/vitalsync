@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vitalsync-backend
+  labels:
+    app: vitalsync-backend
+spec:
+  # 2 replicas : garantit la haute disponibilite. 1 seul replica cree un point
+  # de defaillance unique. 3 replicas seraient justifies en production a fort trafic,
+  # mais 2 est un bon compromis pour un environnement staging/pre-prod.
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vitalsync-backend
+  template:
+    metadata:
+      labels:
+        app: vitalsync-backend
+    spec:
+      containers:
+        - name: backend
+          image: zeyna10/vitalsync-backend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: DATABASE_URL
+              value: "postgresql://vitalsync_user:supersecretpassword@database:5432/vitalsync"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vitalsync-db-secret
+                  key: POSTGRES_PASSWORD
+          # Liveness probe : Kubernetes verifie toutes les 10 secondes que le
+          # back-end repond sur /health. Si la probe echoue 3 fois consecutives,
+          # Kubernetes redemarre automatiquement le pod (self-healing).
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 3

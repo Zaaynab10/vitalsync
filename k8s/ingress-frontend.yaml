@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vitalsync-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  # Ingress est choisi plutot que NodePort ou LoadBalancer car il permet de gerer
+  # le routage HTTP au niveau applicatif (par chemin ou par domaine), avec un seul
+  # point d'entree pour plusieurs services. NodePort expose un port brut sur chaque
+  # noeud, LoadBalancer cree un load balancer cloud (couteux). Ingress est la solution
+  # la plus flexible et economique pour exposer des services HTTP en production.
+  rules:
+    - host: vitalsync.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vitalsync-frontend-service
+                port:
+                  number: 80

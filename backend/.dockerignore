@@ -1,0 +1,16 @@
+# Dependances Node (regenerees via npm ci)
+node_modules/
+
+# Logs
+*.log
+
+# Variables d'environnement
+.env
+.env.local
+
+# Fichiers Git
+.git
+.gitignore
+
+# Documentation
+README.md

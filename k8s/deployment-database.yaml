@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vitalsync-database
+  labels:
+    app: vitalsync-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vitalsync-database
+  template:
+    metadata:
+      labels:
+        app: vitalsync-database
+    spec:
+      containers:
+        - name: database
+          image: postgres:15-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "vitalsync_user"
+            - name: POSTGRES_DB
+              value: "vitalsync"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vitalsync-db-secret
+                  key: POSTGRES_PASSWORD
