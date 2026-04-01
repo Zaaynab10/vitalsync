@@ -10,6 +10,7 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
 
@@ -35,7 +36,7 @@ jobs:
       - name: Installation et configuration ESLint
         working-directory: backend
         run: |
-          npm install --save-dev eslint
+          npm install --save-dev eslint@8.57.0
           echo '{"env":{"node":true,"es2021":true},"extends":"eslint:recommended","parserOptions":{"ecmaVersion":"latest"}}' > .eslintrc.json
 
       - name: Execution du linter ESLint
