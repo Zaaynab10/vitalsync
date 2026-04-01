@@ -1,23 +1,23 @@
-# Dépendances Node.js
+# Dépendances Node.js (recréées avec npm install)
 node_modules/
 
-# Variables d'environnement
+# Variables d'environnement (peuvent contenir des secrets)
 .env
 
-# Logs
+# Logs générés automatiquement
 *.log
 npm-debug.log*
 
-# Build
+# Fichiers de build générés
 dist/
 build/
 
-# macOS
+# Fichiers système macOS
 .DS_Store
 
-# Jest
+# Cache et rapports de tests Jest
 .jest-cache/
 coverage/
 
-# Docker local
+# Variables locales Docker
 .env.local
